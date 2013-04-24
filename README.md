@@ -1,4 +1,5 @@
 # BukkitBootstrap
+Script to setup/manage CraftBukkit server on linux.
 ```
  ___      _   _   _ _   ___           _      _                 
 | _ )_  _| |_| |_(_) |_| _ ) ___  ___| |_ __| |_ _ _ __ _ _ __ 
@@ -6,7 +7,7 @@
 |___/\_,_|_\_\_\_\_|\__|___/\___/\___/\__/__/\__|_| \__,_| .__/
                                                          |_|   
 ```
-## Requirments                                                                  
+## Requirments 
  - [BASH] [1]
  - [cURL] [2]
  - [tmux] [3]
@@ -31,7 +32,10 @@ Edit config/setting.sh if needed.
 ## TODO
  - support other linux distributions. (current only Ubuntu)
  - colorful output
- - ..
+ - update CraftBukkit
+ - log rotate
+ - report server status
+ - ...
 
 ## Author                                                                       
 Timothy.Lee a.k.a MarlboroMoo.                                                  
