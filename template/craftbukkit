@@ -1,0 +1,53 @@
+
+#= functions ==================================================================
+start_bukkit_server(){
+    cd $(dirname $0)
+    tmux new-session -d -s $SESSION
+    tmux new-window -t "$SESSION":1 -n Console \
+        "java $JAVA_OPT -jar craftbukkit.jar"
+    tmux kill-window -t "$SESSION":0  
+    attach_console
+}
+
+attach_console(){
+    tmux attach-session -t "$SESSION" \; set-option -g prefix $PREFIX
+}
+
+stop_bukkit_server(){
+    tmux kill-session -t "$SESSION" 2>/dev/null
+    if [[ "$?" == 0 ]]; then
+        echo 'Done.'
+    else
+        echo 'Fail!'
+    fi
+}
+
+check_session(){
+    if [[ $(tmux list-session | awk '{print $1}' | cut -d':' -f1 \
+        | grep $SESSION) == $SESSION ]]; then
+        attach_console
+    else
+        start_bukkit_server
+    fi
+}
+
+useage(){
+    echo "Useage: $(basename $0) [start|attach|stop]"
+}
+
+#= main program ===============================================================
+case $1 in
+    start)
+        check_session
+        ;;
+    attach)
+        check_session
+        ;;
+    stop)
+        stop_bukkit_server
+        ;;
+    *)
+        useage
+        ;;
+esac
+

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+INSTALL_PATH=~/craftbukkit
+PURGE_INSTALL=false
+USE_CRAFTBUKKIT_BETA=true
+USE_SCRREN_PREFIX=true
+TMUX_SESSION='CraftBukkit'
+JAVA_OPT='-Xms1024M -Xmx1024M'
