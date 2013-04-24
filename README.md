@@ -16,9 +16,18 @@
 ```
 git clone https://github.com/marlboromoo/bukkit_bootstrap.git
 cd bukkit_bootstrap
-./bootstrap.sh
+./bootstrap.sh 
 
 ```
+## Configuration
+Edit config/setting.sh if needed.
+ - `INSTALL_PATH` : path to install CraftBukkit
+ - `PURGE_INSTALL`: delete the old installation path instead of rename it
+ - `USE_CRAFTBUKKIT_BETA`: use beta version of CraftBukkit
+ - `USE_SCRREN_PREFIX`: use 'C-a' instead of 'C-b'
+ - `TMUX_SESSION`: session name of tmux
+ - `JAVA_OPT`: java option to launch CraftBukkit server
+
 ## TODO
  - support other linux distributions. (current only Ubuntu)
  - colorful output
