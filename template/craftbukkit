@@ -30,10 +30,15 @@ attach_console(){
 
 stop_bukkit_server(){
     echo 'Please wait ...'
-    tmux send -t $SESSION stop ENTER 2>/dev/null
-    check_fail
+    try=0
     while [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; do
+        tmux send -t $SESSION stop ENTER 2>/dev/null
         sleep 1
+        try=$(($try+1))
+        if [[ "$try" -ge 10 ]]; then
+            echo "Fail."
+            exit 1
+        fi
     done
     echo 'Done.'
 }
