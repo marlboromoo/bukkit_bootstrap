@@ -1,5 +1,21 @@
 
 #= functions ==================================================================
+check_result(){
+    if [[ "$?" == 0 ]]; then
+        echo 'Done.'
+    else
+        echo 'Fail!'
+        exit 1
+    fi
+}
+
+check_fail(){
+    if [[ "$?" != 0 ]]; then
+        echo 'Fail!'
+        exit 1
+    fi
+}
+
 start_bukkit_server(){
     tmux new-session -d -s $SESSION
     tmux new-window -t "$SESSION":1 -n Console \
@@ -13,22 +29,18 @@ attach_console(){
 }
 
 stop_bukkit_server(){
-    #tmux kill-session -t "$SESSION" 2>/dev/null
-    tmux send -t $SESSION stop ENTER
-    if [[ "$?" == 0 ]]; then
-        echo 'Done.'
-    else
-        echo 'Fail!'
-    fi
+    echo 'Please wait ...'
+    tmux send -t $SESSION stop ENTER 2>/dev/null
+    check_fail
+    while [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; do
+        sleep 1
+    done
+    echo 'Done.'
 }
 
 kill_bukkit_server(){
     tmux kill-session -t "$SESSION" 2>/dev/null
-    if [[ "$?" == 0 ]]; then
-        echo 'Done.'
-    else
-        echo 'Fail!'
-    fi
+    check_result
 }
 
 purge_maps(){
