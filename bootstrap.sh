@@ -136,6 +136,10 @@ prepare_bukkit_script(){
     fi
 }
 
+show_logo(){
+        clear; cat $LOGO
+}
+
 help_msg(){
     line='*****'
     echo -e "\n$line Install complete $line"
@@ -143,18 +147,35 @@ help_msg(){
     echo -e "To launch CraftBukkit server:\n$INSTALL_PATH/$BUKKIT_SCRIPT"
 }
 
+useage(){
+    echo "Useage: $(basename $0) [install|update-script] "
+}
+
 #= main program ===============================================================
-INSTALL_PATH=$(strip_slash $INSTALL_PATH)
-clear; cat $LOGO
-#. check environment
-check_os
-check_packages $REQUIRE_PACKAGE
-#. backup first
-purge_install
-#. install
-prepare_install_path
-prepare_bukkit_script
-cd $INSTALL_PATH
-get_bukkit
-help_msg
+
+case $1 in
+    install)
+        INSTALL_PATH=$(strip_slash $INSTALL_PATH)
+        show_logo
+        #. check environment
+        check_os
+        check_packages $REQUIRE_PACKAGE
+        #. backup first
+        purge_install
+        #. install
+        prepare_install_path
+        prepare_bukkit_script
+        cd $INSTALL_PATH
+        get_bukkit
+        help_msg
+        ;;
+    update-script)
+        show_logo
+        prepare_bukkit_script
+        help_msg
+        ;;
+    *)
+        useage
+        ;;
+esac
 
