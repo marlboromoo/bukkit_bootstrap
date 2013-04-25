@@ -1,7 +1,6 @@
 
 #= functions ==================================================================
 start_bukkit_server(){
-    cd $(dirname $0)
     tmux new-session -d -s $SESSION
     tmux new-window -t "$SESSION":1 -n Console \
         "java $JAVA_OPT -jar craftbukkit.jar"
@@ -23,6 +22,27 @@ stop_bukkit_server(){
     fi
 }
 
+kill_bukkit_server(){
+    tmux kill-session -t "$SESSION" 2>/dev/null
+    if [[ "$?" == 0 ]]; then
+        echo 'Done.'
+    else
+        echo 'Fail!'
+    fi
+}
+
+purge_maps(){
+    for dir in $MAP_DIRS; do
+        rm -rf $dir
+    done
+}
+
+rename_maps(){
+    for dir in $MAP_DIRS; do
+        mv $dir $dir.$(date +"%s")
+    done
+}
+
 check_session(){
     if [[ $(tmux list-session | awk '{print $1}' | cut -d':' -f1 \
         | grep $SESSION) == $SESSION ]]; then
@@ -33,10 +53,11 @@ check_session(){
 }
 
 useage(){
-    echo "Useage: $(basename $0) [start|attach|stop]"
+    echo "Useage: $(basename $0) [start|attach|stop|kill|remake-world|purge-world]"
 }
 
 #= main program ===============================================================
+cd $(dirname $0)
 case $1 in
     start)
         check_session
@@ -46,6 +67,19 @@ case $1 in
         ;;
     stop)
         stop_bukkit_server
+        ;;
+    kill)
+        kill_bukkit_server
+        ;;
+    remake-world)
+        stop_bukkit_server
+        rename_maps
+        start_bukkit_server
+        ;;
+    purge-world)
+        stop_bukkit_server
+        purge_maps
+        start_bukkit_server
         ;;
     *)
         useage

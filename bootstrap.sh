@@ -107,6 +107,8 @@ prepare_install_path(){
 make_bukkit_script(){
     tmp_script=/tmp/cb.sh.$(date +"%s")
     echo '#!/bin/bash' > $tmp_script
+    #. bukkit settings
+    echo "MAP_DIRS='$MAP_DIRS'" >> $tmp_script
     #. get jav settings
     echo "JAVA_OPT='$JAVA_OPT'" >> $tmp_script
     #. get tmux settings
