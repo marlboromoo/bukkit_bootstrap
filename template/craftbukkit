@@ -14,7 +14,8 @@ attach_console(){
 }
 
 stop_bukkit_server(){
-    tmux kill-session -t "$SESSION" 2>/dev/null
+    #tmux kill-session -t "$SESSION" 2>/dev/null
+    tmux send -t $SESSION stop ENTER
     if [[ "$?" == 0 ]]; then
         echo 'Done.'
     else
