@@ -70,7 +70,7 @@ check_session(){
 }
 
 useage(){
-    echo "Useage: $(basename $0) [start|attach|stop|kill|remake-world|purge-world]"
+    echo "Useage: $(basename $0) [start|attach|stop|restart|kill|remake-world|purge-world]"
 }
 
 #= main program ===============================================================
@@ -84,6 +84,10 @@ case $1 in
         ;;
     stop)
         stop_bukkit_server
+        ;;
+    restart)
+        stop_bukkit_server
+        start_bukkit_server
         ;;
     kill)
         kill_bukkit_server
