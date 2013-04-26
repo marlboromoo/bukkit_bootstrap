@@ -70,8 +70,7 @@ rename_maps(){
 }
 
 check_session(){
-    if [[ $(tmux list-session | awk '{print $1}' | cut -d':' -f1 \
-        | grep $SESSION) == $SESSION ]]; then
+    if [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; then
         attach_console
     else
         start_bukkit_server
