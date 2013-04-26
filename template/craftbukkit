@@ -1,5 +1,12 @@
 
 #= functions ==================================================================
+check_if_in_tmux(){
+    if [[ "$TERM" == 'screen' ]] || [[ -n $TMUX ]]; then
+        echo "Can't Create/Attach session in other tmux session!"
+        exit 1
+    fi
+}
+
 check_result(){
     if [[ "$?" == 0 ]]; then
         echo 'Done.'
@@ -17,6 +24,7 @@ check_fail(){
 }
 
 start_bukkit_server(){
+    check_if_in_tmux
     tmux new-session -d -s $SESSION
     tmux new-window -t "$SESSION":1 -n Console \
         "java $JAVA_OPT -jar craftbukkit.jar"
@@ -25,6 +33,7 @@ start_bukkit_server(){
 }
 
 attach_console(){
+    check_if_in_tmux
     tmux attach-session -t "$SESSION" \; set-option -g prefix $PREFIX
 }
 
