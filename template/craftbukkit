@@ -77,8 +77,28 @@ check_session(){
     fi
 }
 
+today(){
+     date +"%Y%m%d_%s"
+}
+
+log_rotate(){
+    log=$LOG_DIR/server.$(today).log
+    mkdir -p $LOG_DIR
+    cat $LOG_FILE > $log
+    echo "Log rotate to $log!" > $LOG_FILE
+}
+
 useage(){
-    echo "Useage: $(basename $0) [start|attach|stop|restart|kill|remake-world|purge-world]"
+    echo -e "Useage: $(basename $0) [CMD]\n"
+    echo -e "Available CMDs:"
+    echo -e "  start\t\t\tStart bukkit server."
+    echo -e "  attach\t\tAttach bukkit server console."
+    echo -e "  stop\t\t\tStop bukkit server. (graceful)"
+    echo -e "  restart\t\tRestart bukkit server. (graceful)"
+    echo -e "  kill\t\t\tKill the bukkit server."
+    echo -e "  log-rotate\t\tLog rotate."
+    echo -e "  remake-world\t\tStop server, rename map directories, start server."
+    echo -e "  purge-world\t\tStop server, delete map directories, start server."
 }
 
 #= main program ===============================================================
@@ -99,6 +119,9 @@ case $1 in
         ;;
     kill)
         kill_bukkit_server
+        ;;
+    log-rotate)
+        log_rotate
         ;;
     remake-world)
         stop_bukkit_server

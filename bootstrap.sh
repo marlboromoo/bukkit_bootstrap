@@ -109,7 +109,9 @@ make_bukkit_script(){
     echo '#!/bin/bash' > $tmp_script
     #. bukkit settings
     echo "MAP_DIRS='$MAP_DIRS'" >> $tmp_script
-    #. get jav settings
+    echo "LOG_DIR='$LOG_DIR'" >> $tmp_script
+    echo "LOG_FILE='$LOG_FILE'" >> $tmp_script
+    #. get java settings
     echo "JAVA_OPT='$JAVA_OPT'" >> $tmp_script
     #. get tmux settings
     echo "SESSION='$TMUX_SESSION'" >> $tmp_script
