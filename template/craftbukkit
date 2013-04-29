@@ -9,9 +9,9 @@ check_if_in_tmux(){
 
 check_result(){
     if [[ "$?" == 0 ]]; then
-        echo 'Done.'
+        echo "$1: Done."
     else
-        echo 'Fail!'
+        echo "$1: Fail!"
         exit 1
     fi
 }
@@ -29,7 +29,7 @@ start_bukkit_server(){
     tmux new-window -t "$SESSION":1 -n Console \
         "java $JAVA_OPT -jar craftbukkit.jar"
     tmux kill-window -t "$SESSION":0  
-    attach_console
+    check_result 'Start'
 }
 
 attach_console(){
@@ -45,11 +45,11 @@ stop_bukkit_server(){
         sleep 1
         try=$(($try+1))
         if [[ "$try" -ge 10 ]]; then
-            echo "Fail."
+            echo "Stop: Fail."
             exit 1
         fi
     done
-    echo 'Done.'
+    echo 'Stop: Done.'
 }
 
 kill_bukkit_server(){
@@ -71,7 +71,7 @@ rename_maps(){
 
 check_session(){
     if [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; then
-        attach_console
+        echo "session exist: $SESSION"
     else
         start_bukkit_server
     fi
@@ -88,7 +88,7 @@ case $1 in
         check_session
         ;;
     attach)
-        check_session
+        attach_console
         ;;
     stop)
         stop_bukkit_server
