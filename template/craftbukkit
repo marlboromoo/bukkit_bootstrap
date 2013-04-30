@@ -37,11 +37,16 @@ attach_console(){
     tmux attach-session -t "$SESSION" \; set-option -g prefix $PREFIX
 }
 
+send_command(){
+    tmux send -t $SESSION "$1" ENTER 2>/dev/null
+}
+
 stop_bukkit_server(){
     echo 'Please wait ...'
     try=0
     while [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; do
-        tmux send -t $SESSION stop ENTER 2>/dev/null
+        #tmux send -t $SESSION stop ENTER 2>/dev/null
+        send_command "stop"
         sleep 1
         try=$(($try+1))
         if [[ "$try" -ge 10 ]]; then
@@ -96,6 +101,7 @@ useage(){
     echo -e "  stop\t\t\tStop bukkit server. (graceful)"
     echo -e "  restart\t\tRestart bukkit server. (graceful)"
     echo -e "  kill\t\t\tKill the bukkit server."
+    echo -e "  cmd\t\t\tSend command to bukkit server."
     echo -e "  log-rotate\t\tLog rotate."
     echo -e "  remake-world\t\tStop server, rename map directories, start server."
     echo -e "  purge-world\t\tStop server, delete map directories, start server."
@@ -119,6 +125,9 @@ case $1 in
         ;;
     kill)
         kill_bukkit_server
+        ;;
+    cmd)
+        send_command "$2"
         ;;
     log-rotate)
         log_rotate
