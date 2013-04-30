@@ -45,7 +45,6 @@ stop_bukkit_server(){
     echo 'Please wait ...'
     try=0
     while [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; do
-        #tmux send -t $SESSION stop ENTER 2>/dev/null
         send_command "stop"
         sleep 1
         try=$(($try+1))
@@ -59,18 +58,18 @@ stop_bukkit_server(){
 
 kill_bukkit_server(){
     tmux kill-session -t "$SESSION" 2>/dev/null
-    check_result
+    check_result "Stop"
 }
 
 purge_maps(){
     for dir in $MAP_DIRS; do
-        rm -rf $dir
+        rm -rf $dir 2>/dev/null
     done
 }
 
 rename_maps(){
     for dir in $MAP_DIRS; do
-        mv $dir $dir.$(date +"%s")
+        mv $dir $dir.$(date +"%s") 2>/dev/null
     done
 }
 
@@ -93,6 +92,19 @@ log_rotate(){
     echo "Log rotate to $log!" > $LOG_FILE
 }
 
+confirm(){
+    read -p "Are you sure ? (yes/no)" answer
+    case $answer in
+        yes)
+            foo=bar
+            ;;
+        *)
+            echo 'Abort.'
+            exit 0
+            ;;
+    esac
+}
+
 useage(){
     echo -e "Useage: $(basename $0) [CMD]\n"
     echo -e "Available CMDs:"
@@ -101,7 +113,7 @@ useage(){
     echo -e "  stop\t\t\tStop bukkit server. (graceful)"
     echo -e "  restart\t\tRestart bukkit server. (graceful)"
     echo -e "  kill\t\t\tKill the bukkit server."
-    echo -e "  cmd\t\t\tSend command to bukkit server."
+    echo -e "  cmd \"MY COMMAND\"\tSend command to bukkit server."
     echo -e "  log-rotate\t\tLog rotate."
     echo -e "  remake-world\t\tStop server, rename map directories, start server."
     echo -e "  purge-world\t\tStop server, delete map directories, start server."
@@ -133,11 +145,13 @@ case $1 in
         log_rotate
         ;;
     remake-world)
+        confirm
         stop_bukkit_server
         rename_maps
         start_bukkit_server
         ;;
     purge-world)
+        confirm
         stop_bukkit_server
         purge_maps
         start_bukkit_server
