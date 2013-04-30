@@ -144,6 +144,19 @@ show_logo(){
         clear; cat $LOGO
 }
 
+confirm(){
+    read -p "$1 (yes/no)" answer
+    case $answer in
+        yes)
+            foo=bar
+            ;;
+        *)
+            echo 'Abort.'
+            exit 0
+            ;;
+    esac
+}
+
 help_msg(){
     line='*****'
     echo -e "\n$line Install complete $line"
@@ -161,6 +174,8 @@ case $1 in
     install)
         INSTALL_PATH=$(strip_slash $INSTALL_PATH)
         show_logo
+        #. confirm install
+        confirm "This script will install CraftBukkit server, continue?"
         #. check environment
         check_os
         check_packages $REQUIRE_PACKAGE
