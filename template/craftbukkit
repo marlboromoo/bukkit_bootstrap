@@ -55,6 +55,7 @@ send_command(){
 
 stop_bukkit_server(){
     echo 'Please wait ...'
+    unbind_key
     try=0
     while [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; do
         send_command "stop"
@@ -66,13 +67,12 @@ stop_bukkit_server(){
         fi
     done
     echo 'Stop: Done.'
-    unbind_key
 }
 
 kill_bukkit_server(){
+    unbind_key
     tmux kill-session -t "$SESSION" 2>/dev/null
     check_result "Stop"
-    unbind_key
 }
 
 purge_maps(){
