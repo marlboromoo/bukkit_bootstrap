@@ -124,6 +124,7 @@ useage(){
     echo -e "Available CMDs:"
     echo -e "  start\t\t\tStart bukkit server."
     echo -e "  attach\t\tAttach bukkit server console."
+    echo -e "  console\t\t\tAlias for attach."
     echo -e "  stop\t\t\tStop bukkit server. (graceful)"
     echo -e "  restart\t\tRestart bukkit server. (graceful)"
     echo -e "  kill\t\t\tKill the bukkit server."
@@ -139,7 +140,7 @@ case $1 in
     start)
         check_session
         ;;
-    attach)
+    attach|console)
         attach_console
         ;;
     stop)
