@@ -111,6 +111,7 @@ make_bukkit_script(){
     echo "MAP_DIRS='$MAP_DIRS'" >> $tmp_script
     echo "LOG_DIR='$LOG_DIR'" >> $tmp_script
     echo "LOG_FILE='$LOG_FILE'" >> $tmp_script
+    echo "EVIL_KEY='$EVIL_KEY'" >> $tmp_script
     #. get java settings
     echo "JAVA_OPT='$JAVA_OPT'" >> $tmp_script
     #. get tmux settings

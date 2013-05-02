@@ -23,18 +23,30 @@ check_fail(){
     fi
 }
 
+bind_key(){
+    tmux set-option -t $SESSION prefix $PREFIX >/dev/null 2>&1
+    #. map Ctrl+c to prefix-key/detach to prevent bukkit server from killing. 
+    tmux set-option -t $SESSION prefix2 $EVIL_KEY >/dev/null 2>&1
+    tmux bind $EVIL_KEY detach
+}
+
+unbind_key(){
+    tmux unbind $EVIL_KEY 
+}
+
 start_bukkit_server(){
     check_if_in_tmux
     tmux new-session -d -s $SESSION
     tmux new-window -t "$SESSION":1 -n Console \
         "java $JAVA_OPT -jar craftbukkit.jar"
-    tmux kill-window -t "$SESSION":0  
     check_result 'Start'
+    tmux kill-window -t "$SESSION":0  
+    bind_key
 }
 
 attach_console(){
     check_if_in_tmux
-    tmux attach-session -t "$SESSION" \; set-option -g prefix $PREFIX
+    tmux attach-session -t "$SESSION" #\; set-option -g prefix $PREFIX
 }
 
 send_command(){
@@ -54,11 +66,13 @@ stop_bukkit_server(){
         fi
     done
     echo 'Stop: Done.'
+    unbind_key
 }
 
 kill_bukkit_server(){
     tmux kill-session -t "$SESSION" 2>/dev/null
     check_result "Stop"
+    unbind_key
 }
 
 purge_maps(){
