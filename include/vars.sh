@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SUPPORT_OS='ubuntu'
-REQUIRE_PACKAGE='git tmux openjdk-7-jre'
+REQUIRE_PACKAGE='git tmux openjdk-7-jre perl'
 CB_STABLE=http://dl.bukkit.org/latest-rb/craftbukkit.jar
 CB_BETA=http://cbukk.it/craftbukkit-beta.jar
 BUKKIT_JAR='craftbukkit.jar'

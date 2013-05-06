@@ -11,7 +11,8 @@ Script to setup/manage CraftBukkit server on linux.
  - [BASH] [1]
  - [cURL] [2]
  - [tmux] [3]
- - java
+ - Perl
+ - JRE
                                                                                 
 ## Install
 ```
