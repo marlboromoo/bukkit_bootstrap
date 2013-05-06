@@ -119,16 +119,21 @@ confirm(){
     esac
 }
 
+strip_color(){
+    perl -pe 's/\e\[?.*?[\@-~]//g' $1
+}
+
 useage(){
     echo -e "Useage: $(basename $0) [CMD]\n"
     echo -e "Available CMDs:"
     echo -e "  start\t\t\tStart bukkit server."
     echo -e "  attach\t\tAttach bukkit server console."
-    echo -e "  console\t\t\tAlias for attach."
+    echo -e "  console\t\tAlias for attach."
     echo -e "  stop\t\t\tStop bukkit server. (graceful)"
     echo -e "  restart\t\tRestart bukkit server. (graceful)"
     echo -e "  kill\t\t\tKill the bukkit server."
     echo -e "  cmd \"MY COMMAND\"\tSend command to bukkit server."
+    echo -e "  plainlog \"LOGFILE\"\tStrip color code from log file."
     echo -e "  log-rotate\t\tLog rotate."
     echo -e "  remake-world\t\tStop server, rename map directories, start server."
     echo -e "  purge-world\t\tStop server, delete map directories, start server."
@@ -170,6 +175,9 @@ case $1 in
         stop_bukkit_server
         purge_maps
         start_bukkit_server
+        ;;
+    plainlog)
+        strip_color "$2"
         ;;
     *)
         useage
