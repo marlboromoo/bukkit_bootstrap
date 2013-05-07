@@ -49,15 +49,33 @@ attach_console(){
     tmux attach-session -t "$SESSION" #\; set-option -g prefix $PREFIX
 }
 
+detach_clients(){
+    tmux detach -s "$SESSION" 2>/dev/null
+}
+
 send_command(){
     tmux send -t $SESSION "$1" ENTER 2>/dev/null
 }
 
+send_ctrl_key(){
+    tmux send -t $SESSION "$1" 2>/dev/null
+}
+
+clean_cmd_line(){
+    send_ctrl_key 'C-e' #. move to end of line (END)
+    for (( i = 0; i < 50; i++ )); do
+        send_ctrl_key 'C-h' #. clean the command line (BACKSPACE)
+    done
+}
+
 stop_bukkit_server(){
     echo 'Please wait ...'
+    detach_clients
     unbind_key
+    clean_cmd_line
     try=0
     while [[ -z $(tmux has-session -t $SESSION 2>&1) ]]; do
+        send_command "quit" #. exit from YAPP menu
         send_command "stop"
         sleep 1
         try=$(($try+1))
@@ -71,6 +89,7 @@ stop_bukkit_server(){
 
 kill_bukkit_server(){
     unbind_key
+    detach_clients
     tmux kill-session -t "$SESSION" 2>/dev/null
     check_result "Stop"
 }
