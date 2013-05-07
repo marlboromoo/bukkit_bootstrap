@@ -7,6 +7,12 @@ Script to setup/manage CraftBukkit server on linux.
 |___/\_,_|_\_\_\_\_|\__|___/\___/\___/\__/__/\__|_| \__,_| .__/
                                                          |_|   
 ```
+## Features
+ - Install bukkit server from beta/stable channel.
+ - Manage bukkit server with tmux session.
+ - Remap `Ctrl+c` key to prevent killing bukkit server.
+ - Control script with convenient functions(see [below](#Useage)).
+
 ## Requirments 
  - [BASH] [1]
  - [cURL] [2]
@@ -16,11 +22,13 @@ Script to setup/manage CraftBukkit server on linux.
                                                                                 
 ## Install
 ```
+cd ~/
 git clone https://github.com/marlboromoo/bukkit_bootstrap.git
 cd bukkit_bootstrap
-./bootstrap.sh 
+./bootstrap.sh install
 
 ```
+
 ## Configuration
 Edit `config/setting.sh` if needed:
  - `INSTALL_PATH` : path to install CraftBukkit
@@ -50,6 +58,14 @@ Available CMDs:
   remake-world		Stop server, rename map directories, start server.
   purge-world		Stop server, delete map directories, start server.
  
+```
+
+## Update
+You can regenerate the `craftbukkit.sh` after modifying configs or updating from this repository.
+```
+cd ~/bukkit_bootstrap
+git pull
+./bootstrap update-script
 ```
 
 ## Daily Jobs
