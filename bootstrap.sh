@@ -122,6 +122,8 @@ make_bukkit_script(){
         PREFIX=$TMUX_PREFIX
     fi
     echo "PREFIX='$PREFIX'" >> $tmp_script
+    #. other settings
+    echo "MAX_TRY='$MAX_TRY'" >> $tmp_script
     #. almost done
     cat $BUKKIT_SCRIPT_TEMPLATE >> $tmp_script
     chmod +x $tmp_script
