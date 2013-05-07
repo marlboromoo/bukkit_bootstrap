@@ -75,6 +75,10 @@ kill_bukkit_server(){
     check_result "Stop"
 }
 
+purge_the_end(){
+    rm -rf $WORLD_END 2>/dev/null
+}
+
 purge_maps(){
     for dir in $MAP_DIRS; do
         rm -rf $dir 2>/dev/null
@@ -135,6 +139,7 @@ useage(){
     echo -e "  cmd \"MY COMMAND\"\tSend command to bukkit server."
     echo -e "  plainlog \"LOGFILE\"\tStrip color code from log file."
     echo -e "  log-rotate\t\tLog rotate."
+    echo -e "  regen-end\t\tStop server, delete world_the_end dir, start server."
     echo -e "  remake-world\t\tStop server, rename map directories, start server."
     echo -e "  purge-world\t\tStop server, delete map directories, start server."
 }
@@ -163,6 +168,11 @@ case $1 in
         ;;
     log-rotate)
         log_rotate
+        ;;
+    regen-end)
+        stop_bukkit_server
+        purge_the_end
+        start_bukkit_server
         ;;
     remake-world)
         confirm

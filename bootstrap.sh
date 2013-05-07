@@ -108,6 +108,7 @@ make_bukkit_script(){
     tmp_script=/tmp/cb.sh.$(date +"%s")
     echo '#!/bin/bash' > $tmp_script
     #. bukkit settings
+    echo "WORLD_END='$WORLD_END'" >> $tmp_script
     echo "MAP_DIRS='$MAP_DIRS'" >> $tmp_script
     echo "LOG_DIR='$LOG_DIR'" >> $tmp_script
     echo "LOG_FILE='$LOG_FILE'" >> $tmp_script
