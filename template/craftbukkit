@@ -146,8 +146,8 @@ strip_color(){
     perl -pe 's/\e\[?.*?[\@-~]//g' $1
 }
 
-useage(){
-    echo -e "Useage: $(basename $0) [CMD]\n"
+usage(){
+    echo -e "Usage: $(basename $0) [CMD]\n"
     echo -e "Available CMDs:"
     echo -e "  start\t\t\tStart bukkit server."
     echo -e "  attach\t\tAttach bukkit server console."
@@ -209,7 +209,7 @@ case $1 in
         strip_color "$2"
         ;;
     *)
-        useage
+        usage
         ;;
 esac
 
