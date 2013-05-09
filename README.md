@@ -38,7 +38,7 @@ Edit `config/setting.sh` if needed:
  - `TMUX_SESSION`: session name of tmux
  - `JAVA_OPT`: java option to launch CraftBukkit server
 
-## Useage
+## Usage
 Control script for bukkit server.
 ```
 ~/craftbukkit/craftbukkit.sh 
