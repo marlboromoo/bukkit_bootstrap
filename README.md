@@ -11,7 +11,7 @@ Script to setup/manage CraftBukkit server on linux.
  - Install bukkit server from beta/stable channel.
  - Manage bukkit server with tmux session.
  - Remap `Ctrl+c` key to prevent killing bukkit server.
- - Control script with convenient functions(see [below](#useage)).
+ - Control script with convenient functions(see [below](#usage)).
  - Update from rb/beta/dev channels.
 
 ## Requirments 
@@ -46,7 +46,7 @@ Control script for bukkit server.
 Usage: craftbukkit.sh [CMD]
 
 Available CMDs:
-  start			Start bukkit server.
+  start		        Start bukkit server.
   attach		Attach bukkit server console.
   console		Alias for attach.
   stop			Stop bukkit server. (graceful)
