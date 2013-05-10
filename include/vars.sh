@@ -1,5 +1,5 @@
 SUPPORT_OS='ubuntu'
-REQUIRE_PACKAGE='git tmux openjdk-7-jre perl mawk sed curl'
+REQUIRE_PACKAGE='git tmux openjdk-7-jre mawk sed curl'
 CB_DOWNLOAD_URL='http://cbukk.it'
 CB_RB="$CB_DOWNLOAD_URL/craftbukkit.jar"
 CB_BETA="$CB_DOWNLOAD_URL/craftbukkit-beta.jar"

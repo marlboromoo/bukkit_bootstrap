@@ -17,7 +17,7 @@ Script to setup/manage CraftBukkit server on linux.
  - [BASH] [1]
  - [cURL] [2]
  - [tmux] [3]
- - Perl
+ - [Sed] [4]
  - JRE
                                                                                 
 ## Install
@@ -91,9 +91,11 @@ Add follow settings in `/etc/crontab`.
 Timothy.Lee a.k.a MarlboroMoo.                                                  
                                                                                 
 ## License                                                                      
-Released under the [MIT License] [4].                                           
+Released under the [MIT License] [5].                                           
                                                                                 
   [1]: http://tiswww.case.edu/php/chet/bash/bashtop.html "BASH"
   [2]: http://curl.haxx.se/ "cURL"
   [3]: http://tmux.sourceforge.net/ "tmux"
-  [4]: http://opensource.org/licenses/MIT   "MIT License"
+  [4]: http://sed.sourceforge.net/ "Sed"
+  [5]: http://opensource.org/licenses/MIT   "MIT License"
+

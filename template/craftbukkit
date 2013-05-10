@@ -172,7 +172,7 @@ check_update(){
 }
 
 strip_color(){
-    perl -pe 's/\e\[?.*?[\@-~]//g' $1
+    cat -v $1 | sed -e 's#\^\[\[\([0-9]*;*\)*m##g'
 }
 
 usage(){
