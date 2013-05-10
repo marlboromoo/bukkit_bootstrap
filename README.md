@@ -58,9 +58,9 @@ Available CMDs:
   force-update		Force update (need restart).
   check-update		Check if update available.
   log-rotate		Log rotate.
-  regen-end		Stop server, delete world_the_end dir, start server.
-  remake-world		Stop server, rename map directories, start server.
-  purge-world		Stop server, delete map directories, start server.
+  regen-end		Regenerate world: THE END. (need restart)
+  remake-world		Regenerate worlds and keep old worlds. (need restart)
+  purge-world		Regenerate worlds. (need restart)
  
 ```
 

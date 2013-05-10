@@ -202,9 +202,9 @@ usage(){
     echo -e "  force-update\t\tForce update (need restart)."
     echo -e "  check-update\t\tCheck if update available."
     echo -e "  log-rotate\t\tLog rotate."
-    echo -e "  regen-end\t\tStop server, delete world_the_end dir, start server."
-    echo -e "  remake-world\t\tStop server, rename map directories, start server."
-    echo -e "  purge-world\t\tStop server, delete map directories, start server."
+    echo -e "  regen-end\t\tRegenerate world: THE END. (need restart)"
+    echo -e "  remake-world\t\tRegenerate worlds and keep old worlds. (need restart)"
+    echo -e "  purge-world\t\tRegenerate worlds. (need restart)"
 }
 
 #= main program ===============================================================
