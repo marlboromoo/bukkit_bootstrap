@@ -70,6 +70,16 @@ strip_slash(){
     echo $1 | sed 's#/$##g'
 }
 
+check_installation(){
+    message "Check existing installation"
+    if [[ ! -d $INSTALL_PATH ]]; then
+        echo 'CraftBukkit was not installed!'
+        exit 0
+    else
+        okay
+    fi
+}
+
 purge_installation(){
     message "Backup/Remove existing installation"
     if [[ -d $INSTALL_PATH ]]; then
@@ -200,6 +210,7 @@ case $1 in
         show_cb_versions
         ;;
     update-script)
+        check_installation
         prepare_bukkit_script
         help_msg
         ;;
