@@ -83,17 +83,27 @@ purge_install(){
 
 get_bukkit(){
     message "Get CraftBukkit"
-    cb_url=$CB_STABLE
+    cb_url=$CB_RB
     version=stable
-    if [[ "$USE_CRAFTBUKKIT_BETA" == 'true' ]]; then
-       cb_url=$CB_BETA
-       version=beta
-    fi
-    echo "Version: $version"
+    case "$CRAFTBUKKIT_CHANNEL" in
+        rb)
+            cb_url=$CB_RB
+            ;;
+        beta)
+            cb_url=$CB_BETA
+            ;;
+        dev)
+            cb_url=$CB_DEV
+            ;;
+    esac
+    echo "Version: $CRAFTBUKKIT_CHANNEL"
     echo "Please wait ..."
+    echo $cb_url
     curl -# -L -o $(basename $cb_url) $cb_url
-    check_result "Download fail to complete!"
-    ln -s $(basename $cb_url) $BUKKIT_JAR
+    check_result "Downloads fail to complete!"
+    if [[ ! -f $BUKKIT_JAR ]]; then
+        ln -s $(basename $cb_url) $BUKKIT_JAR
+    fi
     check_premission
 }
 
@@ -144,6 +154,16 @@ prepare_bukkit_script(){
     fi
 }
 
+show_cb_info(){
+    message "Check CraftBukkit versions"
+    for slug in $CB_RB_SLUG $CB_BETA_SLUG $CB_DEV_SLUG; do
+        url="$CB_INFO_URL/$CB_SLUG_PREFIX$slug/$CB_INFO_PARAMATER"
+        version=$(curl -s $url | grep -io '<version>.*</version>' | \
+            sed -e 's#<version>##g' -e 's#</version>##g')
+        echo "$slug: $version"
+    done
+}
+
 show_logo(){
         clear; cat $LOGO
 }
@@ -168,8 +188,8 @@ help_msg(){
     echo -e "To launch CraftBukkit server:\n$INSTALL_PATH/$BUKKIT_SCRIPT"
 }
 
-useage(){
-    echo "Useage: $(basename $0) [install|update-script] "
+usage(){
+    echo "Usage: $(basename $0) [install|check-version|update-script] "
 }
 
 #= main program ===============================================================
@@ -192,13 +212,20 @@ case $1 in
         get_bukkit
         help_msg
         ;;
+    check-version)
+        show_logo
+        #. check environment
+        check_packages $REQUIRE_PACKAGE
+        #. do my job
+        show_cb_info
+        ;;
     update-script)
         show_logo
         prepare_bukkit_script
         help_msg
         ;;
     *)
-        useage
+        usage
         ;;
 esac
 
