@@ -96,7 +96,7 @@ kill_bukkit_server(){
     unbind_key
     detach_clients
     tmux kill-session -t "$SESSION" 2>/dev/null
-    check_result "Stop"
+    check_result 'Stop'
 }
 
 purge_the_end(){
@@ -135,7 +135,7 @@ log_rotate(){
 }
 
 confirm(){
-    read -p "Are you sure ? (yes/no)" answer
+    read -p "Are you sure? (yes/no): " answer
     case $answer in
         yes)
             foo=bar
@@ -154,6 +154,17 @@ get_current_version(){
         sed -e "s/$p//g" -e 's/[ )]//g' -e 's#\^\[\[\([0-9]*;*\)*m##g'
 }
 
+update(){
+    url=$(make_download_url)
+    #. rename first
+    jar=$(basename $url)
+    mv $jar $jar.$(date +"%s") 2>/dev/null
+    #. get jar
+    echo $url
+    get_cb_jar $url
+    check_result 'Update'
+}
+
 check_update(){
     echo 'Please wait ...'
     current=$(get_current_version)
@@ -163,12 +174,13 @@ check_update(){
         current=$(get_current_version)
     fi
     latest=$(get_cb_version $CRAFTBUKKIT_CHANNEL)
+    echo -e "Channel: $CRAFTBUKKIT_CHANNEL, Current: $current, Latest: $latest"
     if [[ "$current" == "$latest" ]]; then
         echo "No update available."
+        exit 0
     else
         echo "Update available!"
     fi
-    echo -e "Channel: $CRAFTBUKKIT_CHANNEL, Current: $current, Latest: $latest"
 }
 
 strip_color(){
@@ -186,6 +198,8 @@ usage(){
     echo -e "  kill\t\t\tKill the bukkit server."
     echo -e "  cmd \"MY COMMAND\"\tSend command to bukkit server."
     echo -e "  plainlog \"LOGFILE\"\tStrip color code from log file."
+    echo -e "  update\t\tPerform update if available. (need restart)"
+    echo -e "  force-update\t\tForce update (need restart)."
     echo -e "  check-update\t\tCheck if update available."
     echo -e "  log-rotate\t\tLog rotate."
     echo -e "  regen-end\t\tStop server, delete world_the_end dir, start server."
@@ -214,6 +228,23 @@ case $1 in
         ;;
     cmd)
         send_command "$2"
+        ;;
+    update)
+        start_bukkit_server_if_need
+        sleep 3
+        check_update
+        echo "Need to restart the server during updated!"
+        confirm
+        stop_bukkit_server
+        update
+        start_bukkit_server
+        ;;
+    force-update)
+        echo "Need to restart the server during updated!"
+        confirm
+        stop_bukkit_server
+        update
+        start_bukkit_server
         ;;
     check-update)
         start_bukkit_server_if_need

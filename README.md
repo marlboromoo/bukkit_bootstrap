@@ -12,6 +12,7 @@ Script to setup/manage CraftBukkit server on linux.
  - Manage bukkit server with tmux session.
  - Remap `Ctrl+c` key to prevent killing bukkit server.
  - Control script with convenient functions(see [below](#useage)).
+ - Update from rb/beta/dev channels.
 
 ## Requirments 
  - [BASH] [1]
@@ -42,7 +43,7 @@ Edit `config/setting.sh` if needed:
 Control script for bukkit server.
 ```
 ~/craftbukkit/craftbukkit.sh 
-Useage: craftbukkit.sh [CMD]
+Usage: craftbukkit.sh [CMD]
 
 Available CMDs:
   start			Start bukkit server.
@@ -53,6 +54,9 @@ Available CMDs:
   kill			Kill the bukkit server.
   cmd "MY COMMAND"	Send command to bukkit server.
   plainlog "LOGFILE"	Strip color code from log file.
+  update		Perform update if available. (need restart)
+  force-update		Force update (need restart).
+  check-update		Check if update available.
   log-rotate		Log rotate.
   regen-end		Stop server, delete world_the_end dir, start server.
   remake-world		Stop server, rename map directories, start server.
@@ -83,7 +87,6 @@ Add follow settings in `/etc/crontab`.
 ## TODO
  - support other linux distributions. (current only Ubuntu)
  - colorful output
- - update CraftBukkit
  - report server status
  - ...
 

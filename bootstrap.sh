@@ -6,10 +6,10 @@ CWD=$(dirname $0)
 LOGO=$CWD/include/logo.ascii
 _SETTING=$CWD/config/setting.sh
 _VARS=$CWD/include/vars.sh
-_VERSION=$CWD/include/version.sh
+_FETCH=$CWD/include/fetch.sh
 . $_SETTING
 . $_VARS
-. $_VERSION
+. $_FETCH
 
 #= functions ==================================================================
 check_os(){
@@ -85,26 +85,14 @@ purge_installation(){
 
 get_bukkit(){
     message "Get CraftBukkit"
-    cb_url=$CB_RB
-    version=stable
-    case "$CRAFTBUKKIT_CHANNEL" in
-        rb)
-            cb_url=$CB_RB
-            ;;
-        beta)
-            cb_url=$CB_BETA
-            ;;
-        dev)
-            cb_url=$CB_DEV
-            ;;
-    esac
     echo "Version: $CRAFTBUKKIT_CHANNEL"
     echo "Please wait ..."
-    echo $cb_url
-    curl -# -L -o $(basename $cb_url) $cb_url
+    url=$(make_download_url)
+    echo $url
+    get_cb_jar $url
     check_result "Downloads fail to complete!"
     if [[ ! -f $BUKKIT_JAR ]]; then
-        ln -s $(basename $cb_url) $BUKKIT_JAR
+        ln -s $(basename $url) $BUKKIT_JAR
     fi
     check_premission
 }
@@ -131,7 +119,7 @@ make_bukkit_script(){
     echo "PREFIX='$PREFIX'" >> $tmp_script
     echo '' >> $tmp_script
     #. extra function
-    cat $_VERSION >> $tmp_script
+    cat $_FETCH >> $tmp_script
     #. almost done
     cat $BUKKIT_SCRIPT_TEMPLATE >> $tmp_script
     chmod +x $tmp_script
