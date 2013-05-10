@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-#= variables ==================================================================
+#= includ =====================================================================
 export LANG=C
 CWD=$(dirname $0)
-SETTING=$CWD/config/setting.sh
-VARS=$CWD/include/vars.sh
 LOGO=$CWD/include/logo.ascii
-. $SETTING
-. $VARS
+_SETTING=$CWD/config/setting.sh
+_VARS=$CWD/include/vars.sh
+_VERSION=$CWD/include/version.sh
+. $_SETTING
+. $_VARS
+. $_VERSION
 
 #= functions ==================================================================
 check_os(){
@@ -68,8 +70,8 @@ strip_slash(){
     echo $1 | sed 's#/$##g'
 }
 
-purge_install(){
-    message "Rename/Purge existing installation"
+purge_installation(){
+    message "Backup/Remove existing installation"
     if [[ -d $INSTALL_PATH ]]; then
         if [[ "$PURGE_INSTALL" == 'true' ]]; then
             rm -rf $INSTALL_PATH 2>/dev/null
@@ -116,24 +118,20 @@ prepare_install_path(){
 
 make_bukkit_script(){
     tmp_script=/tmp/cb.sh.$(date +"%s")
-    echo '#!/bin/bash' > $tmp_script
-    #. bukkit settings
-    echo "WORLD_END='$WORLD_END'" >> $tmp_script
-    echo "MAP_DIRS='$MAP_DIRS'" >> $tmp_script
-    echo "LOG_DIR='$LOG_DIR'" >> $tmp_script
-    echo "LOG_FILE='$LOG_FILE'" >> $tmp_script
-    echo "EVIL_KEY='$EVIL_KEY'" >> $tmp_script
-    #. get java settings
-    echo "JAVA_OPT='$JAVA_OPT'" >> $tmp_script
-    #. get tmux settings
+    echo -e '#!/bin/bash\n' > $tmp_script
+    #. variables and settings
+    cat $_VARS >> $tmp_script
+    cat $_SETTING >> $tmp_script
+    #. tmux settings
     echo "SESSION='$TMUX_SESSION'" >> $tmp_script
     PREFIX=$SCREEN_PREFIX
     if [[ "$USE_SCRREN_PREFIX" != 'true' ]]; then
         PREFIX=$TMUX_PREFIX
     fi
     echo "PREFIX='$PREFIX'" >> $tmp_script
-    #. other settings
-    echo "MAX_TRY='$MAX_TRY'" >> $tmp_script
+    echo '' >> $tmp_script
+    #. extra function
+    cat $_VERSION >> $tmp_script
     #. almost done
     cat $BUKKIT_SCRIPT_TEMPLATE >> $tmp_script
     chmod +x $tmp_script
@@ -154,12 +152,10 @@ prepare_bukkit_script(){
     fi
 }
 
-show_cb_info(){
+show_cb_versions(){
     message "Check CraftBukkit versions"
     for slug in $CB_RB_SLUG $CB_BETA_SLUG $CB_DEV_SLUG; do
-        url="$CB_INFO_URL/$CB_SLUG_PREFIX$slug/$CB_INFO_PARAMATER"
-        version=$(curl -s $url | grep -io '<version>.*</version>' | \
-            sed -e 's#<version>##g' -e 's#</version>##g')
+        version=$(get_cb_version $slug)
         echo "$slug: $version"
     done
 }
@@ -189,23 +185,22 @@ help_msg(){
 }
 
 usage(){
-    echo "Usage: $(basename $0) [install|check-version|update-script] "
+    echo "Usage: $(basename $0) [install|upgrade|check-version|update-script] "
 }
 
 #= main program ===============================================================
 
+INSTALL_PATH=$(strip_slash $INSTALL_PATH)
+show_logo
 case $1 in
     install)
-        INSTALL_PATH=$(strip_slash $INSTALL_PATH)
-        show_logo
         #. confirm install
         confirm "This script will install CraftBukkit server, continue?"
         #. check environment
         check_os
         check_packages $REQUIRE_PACKAGE
-        #. backup first
-        purge_install
         #. install
+        purge_installation
         prepare_install_path
         prepare_bukkit_script
         cd $INSTALL_PATH
@@ -213,14 +208,10 @@ case $1 in
         help_msg
         ;;
     check-version)
-        show_logo
-        #. check environment
         check_packages $REQUIRE_PACKAGE
-        #. do my job
-        show_cb_info
+        show_cb_versions
         ;;
     update-script)
-        show_logo
         prepare_bukkit_script
         help_msg
         ;;

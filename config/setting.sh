@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 INSTALL_PATH=~/craftbukkit
 CRAFTBUKKIT_CHANNEL=beta # rb, beta, dev
 PURGE_INSTALL=false

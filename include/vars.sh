@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 SUPPORT_OS='ubuntu'
 REQUIRE_PACKAGE='git tmux openjdk-7-jre perl mawk sed curl'
 CB_DOWNLOAD_URL='http://cbukk.it'
