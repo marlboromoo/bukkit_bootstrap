@@ -8,11 +8,11 @@ Script to setup/manage CraftBukkit server on linux.
                                                          |_|   
 ```
 ## Features
- - Install bukkit server from beta/stable channel.
+ - Install bukkit server from rb/beta/dev channels.
+ - Update from rb/beta/dev channels.
  - Manage bukkit server with tmux session.
  - Remap `Ctrl+c` key to prevent killing bukkit server.
  - Control script with convenient functions(see [below](#usage)).
- - Update from rb/beta/dev channels.
 
 ## Requirments 
  - [BASH] [1]
@@ -88,6 +88,7 @@ Add follow settings in `/etc/crontab`.
  - support other linux distributions. (current only Ubuntu)
  - colorful output
  - report server status
+ - update plugins
  - ...
 
 ## Author                                                                       
