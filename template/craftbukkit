@@ -31,7 +31,7 @@ bind_key(){
 }
 
 unbind_key(){
-    tmux unbind $EVIL_KEY 
+    tmux unbind $EVIL_KEY 2>/dev/null
 }
 
 start_bukkit_server(){
