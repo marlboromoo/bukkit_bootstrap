@@ -85,10 +85,12 @@ Add follow settings in `/etc/crontab`.
 ```
 
 ## TODO
- - support other linux distributions. (current only Ubuntu)
- - colorful output
- - report server status
- - update plugins
+ - Support other linux distributions. (current only Ubuntu)
+ - Colorful output
+ - Report server status
+ - Update plugins
+ - Email notification
+ - Timeout settings (stop server/?)
  - ...
 
 ## Author                                                                       
