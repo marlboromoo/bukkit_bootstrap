@@ -227,6 +227,8 @@ case $1 in
         kill_bukkit_server
         ;;
     cmd)
+        detach_clients
+        clean_cmd_line
         send_command "$2"
         ;;
     update)
