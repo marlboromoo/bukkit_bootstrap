@@ -79,6 +79,7 @@ stop_bukkit_server(){
     unbind_key
     clean_cmd_line
     try=0
+    send_command "save-all"
     while [[ -z $(session_exist) ]]; do
         send_command "quit" #. exit from YAPP menu
         send_command "stop"
@@ -93,8 +94,10 @@ stop_bukkit_server(){
 }
 
 kill_bukkit_server(){
-    unbind_key
     detach_clients
+    unbind_key
+    clean_cmd_line
+    send_command "save-all"
     tmux kill-session -t "$SESSION" 2>/dev/null
     check_result 'Stop'
 }
