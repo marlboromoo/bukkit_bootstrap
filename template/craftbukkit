@@ -35,7 +35,6 @@ unbind_key(){
 }
 
 start_bukkit_server(){
-    check_if_in_tmux
     tmux new-session -d -s $SESSION
     tmux new-window -t "$SESSION":1 -n Console \
         "java $JAVA_OPT -jar craftbukkit.jar"
